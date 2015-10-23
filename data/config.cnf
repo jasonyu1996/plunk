@@ -1,0 +1,14 @@
+{
+	"blog_name": "Blog Name",
+	"blog_subname": "Blog Subname",
+	"nav_bar_items": [
+		{"label": "Archive",
+		"url": "/archive/"}
+	],
+	"detailed_post_no_per_page": 4,
+	"brief_post_no_per_page": 50,
+	"timezone": "Asia/Shanghai",
+	"mathjax_url": "http://cdn.bootcss.com/mathjax/2.5.3/MathJax.js",
+	"jquery_url": "http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"
+}
+

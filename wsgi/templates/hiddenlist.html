@@ -1,0 +1,16 @@
+{% extends "masterlayout.html" %}
+{% block title %}
+Hidden Posts
+{% end %}
+{% block contents %}
+	{% module Pager('/archive/master/hidden/page/%d', page_number, is_last) %}
+	{% module PostList(posts, False, current_user is not None) %}
+	{% module Pager('/archive/master/hidden/page/%d', page_number, is_last) %}
+{% end %}
+{% block js %}
+<script>
+document.getElementById('hiddenlistlink').className = 'active';
+</script>
+{% end %}
+
+

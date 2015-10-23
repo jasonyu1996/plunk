@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}
+	Welcome
+{% end %}
+{% block body %}
+<div class="page-header">
+	<p style="text-align: center; "><img src="{{ static_url('vastvoyage-logo.png') }}" height="200px" style="clear : both; margin : auto; "/></p>
+	<h1 align="center">{{ conf['blog_name'] }}</h1>
+	<h2 align="center">{{ conf['blog_subname'] }}</h2>
+</div>
+	{% module Pager('/page/%d', page_number, is_last) %}
+	{% module PostList(posts, True, current_user is not None) %}
+	{% module Pager('/page/%d', page_number, is_last) %}
+{% end %}
+

@@ -1,0 +1,45 @@
+{% extends "masterlayout.html" %}
+
+{% block title %}
+	{{ post.title }} - Delete
+{% end %}
+
+{% block contents %}
+	{% if status == -1 %}
+	<div class="page-header">
+		<h1>Request not accepted</h1>
+	</div>
+	<p>Your deletion request for the post <b>{{post.title}}</b> could not be accepted because you did not type the title of the post correctly. You may <a href="/master/delete/{{post.id}}">click here to try again</a>.</p>
+	{% elif status == 0 %}
+	<div class="page-header">
+		<h1>Are you sure?</h1>
+	</div>
+	<p>You are attempting to delete the post <b>{{ post.title }}</b>. Its basic information is listed below.</p>
+	<dl class="dl-horizontal">
+		<dt>Author</dt>
+		<dd>{{post.author_name}}</dd>
+		<dt>Time</dt>
+		<dd>{% module Time(post.time) %}</dd>
+	</dl>
+	<p>Please confirm by typing the title of this post.</p>
+	<form class="form-horizontal" action="/master/delete/{{post.id}}"
+		method="post">
+		<div class="control-group">
+			<div class="controls">
+				<input type="text" name="title" placeholder="Title"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button class="btn btn-default" type="submit">Confirm</button>
+			</div>
+		</div>
+	</form>
+	{% else  %}
+	<div class="page-header">
+		<h1>Deletion successfully finished</h1>
+	</div>
+	You have successfully deleted the post <b>{{ post.title }}</b>.
+	{% end %}
+{% end %}
+

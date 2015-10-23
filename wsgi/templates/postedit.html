@@ -1,0 +1,129 @@
+{% extends "masterlayout.html" %}
+{% block title %}
+	{% if post is None %}
+		(New Post) - Edit
+	{% else %}
+		{{post.title}} - Edit
+	{% end %}
+{% end %}
+{% block htmlhead %}
+	<script src="{{static_url('js/tabIndent.js')}}"></script>
+{% end %}
+{% block contents %}
+	{% if post is None %}
+	<form class="form-horizontal" action="/master/edit/" method="post">
+	{% else %}
+	<form class="form-horizontal" action="/master/edit/{{post.id}}" method="post">
+	{% end %}
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="inputTitle">Title</label>
+			<div class="col-sm-5">
+				{% if post is None %}
+				<input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title"/>
+				{% else %}
+				<input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title" value="{{post.title}}"/>
+				{% end %}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="inputIDName">ID name</label>
+			<div class="col-sm-5">
+				{% if post is None or post.id_name is None%}
+				<input type="text" class="form-control" id="inputIDName" name="idname" placeholder="ID name" />
+				{% else %}
+				<input type="text" class="form-control" id="inputIDName" name="idname" placeholder="ID name" value="{{post.id_name}}"/>
+				{% end %}
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="inputVisibilityMode">Visibility mode</label>
+			<div class="col-sm-10" id="inputVisibilityMode">
+				<label class="radio-inline">
+					{% if post is None or post.visibility_mode == 0 %}
+					<input type="radio" name="vismode" value="visible" checked />
+					{% else %}
+					<input type="radio" name="vismode" value="visible" />
+					{% end %}
+					Visible
+				</label>
+				<label class="radio-inline">
+					{% if post is not None and post.visibility_mode == 1 %}
+					<input type="radio" name="vismode" value="hidden" checked />
+					{% else %}
+					<input type="radio" name="vismode" value="hidden" />
+					{% end %}
+					Hidden
+				</label>
+				<label class="radio-inline">
+					{% if post is not None and post.visibility_mode == 2 %}
+					<input type="radio" name="vismode" value="invisible" checked />
+					{% else %}
+					<input type="radio" name="vismode" value="invisible" />
+					{% end %}
+					Invisible
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="inputContents">Contents</label>
+			<div class="col-sm-10">
+				{% if post is None %}
+				<textarea id="inputContents" class="form-control" name="contents" rows="20" cols="120"></textarea>
+				{% else %}
+				<textarea id="inputContents" class="form-control" name="contents" rows="20" cols="120">{{post.contents}}</textarea>
+				{% end %}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="inputTime">Time</label>
+			<div class="col-sm-10" id="inputTime">
+				<label class="radio-inline">
+					{% if post is None %}
+					<input type="radio" name="timetype" value="current" checked />
+					{% else %}
+					<input type="radio" name="timetype" value="current" />
+					{% end %}
+					Current time
+				</label>
+				<label class="radio-inline">
+					{% if post is None %}
+					<input type="radio" name="timetype" value="old" disabled />
+					{% else %}
+					<input type="radio" name="timetype" value="old" checked />
+					{% end %}
+					Old time
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="timetype" value="custo" />
+					Customize
+				</label>
+				{% if post is None %}
+				<input type="text" name="time" placeholder="YY-MM-DD HH:MM:SS" />
+				{% else %}
+				<input type="text" name="time" placeholder="YY-MM-Dd HH:MM:SS" value="{% module Time(post.time) %}"/>
+				{% end %}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sum-10">
+				<button class="btn btn-default" type="submit">Submit</button>
+			</div>
+		</div>
+	</form>
+{% end %}
+{% block js %}
+{% if post is None %}
+<script>
+document.getElementById('newpostlink').className = 'active';
+</script>
+{% end %}
+<script>
+tabIndent.render(document.getElementById('inputContents'));
+</script>
+{% end %}
+

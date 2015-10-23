@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}
+{{escape(post.title)}}
+{% end %}
+{% block body %}
+<div class="container">
+	<div class="page-header">
+		{% if current_user is None %}
+		<h1>{{post.title}}</h1>
+		{% else %}
+		<h1>{{post.title}} <small><a href="/master/edit/{{post.id}}">Edit</a> <a href="/master/delete/{{post.id}}">Delete</a></small></h1>
+		{% end %}
+	</div>
+	{% raw post.contents_html %}
+	<hr/>
+	<p><small>Posted by {{ escape(post.author_name)}} @ {{ escape(str(post.time)) }}</small><p>
+	<div id="comment-list"></div>
+</div>
+{% end %}
+{% block js %}
+<script src="{{static_url('js/comment-list.js')}}"></script>
+<script>
+function docReady(){
+	commentList.bind($("#comment-list"), {{post.id}}, 
+			{% if current_user is None %}
+			false
+			{% else %}
+			true
+			{% end %}
+	);
+}
+
+$(document).ready(docReady);
+</script>
+{% end %}
+

@@ -1,0 +1,21 @@
+{% extends "masterlayout.html" %}
+{% block title %}
+Master Home
+{% end %}
+{% block contents %}
+	<div class="page-header">
+		<h1>Basic Information</h1>
+	</div>
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{ conf['blog_name'] }}</dd>
+		<dt>Subname</dt>
+		<dd>{{ conf['blog_subname'] }}</dd>
+	</dl>
+{% end %}
+{% block js %}
+<script>
+document.getElementById('masterhomelink').className = 'active';
+</script>
+{% end %}
+

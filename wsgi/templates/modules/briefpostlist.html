@@ -1,0 +1,11 @@
+<div class="container">
+	<ul>
+	{% for post in posts %}
+	<li><a href="/post/{{post.id}}">{{post.title}}</a> <small>by {{post.author_name}} @ {% module Time(post.time) %}</small>
+	{% if edit_link %}
+		<small><a href="{{'/master/edit/%d' % post.id}}">Edit</a> <a href="/master/delete/{{post.id}}">Delete</a></small>
+	{% end %}
+	</li>
+	{% end %}
+	</ul>
+</div>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}" />
+		<link rel="shortcut icon" href="{{ static_url('vastvoyage-logo.png') }}" /> 
+		<script src="{{ conf['jquery_url'] }}"></script>
+		<script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+		<script src="{{ conf['mathjax_url'] }}?config=TeX-AMS_HTML"></script>
+		<style type="text/css">
+			body { padding-top: 70px; }
+		</style>
+		{% block htmlhead %}
+		{% end %}
+		<title>{% block title %}{% end %} - {{ escape(conf['blog_name']) }}</title>
+	</head>
+	<body>
+		{% block header %}
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">{{ escape(conf['blog_name']) }}</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+					{% if current_user == None %}
+					<li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					{% else %}
+					<li><a href="/master/"><span class="glyphicon glyphicon-wrench"></span> Master</a></li>
+					<li class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ escape(current_user.name) }}</li>
+					<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+					{% end %}
+					</ul>
+					<ul class="nav navbar-nav navbar-left">
+						{% for item in conf['nav_bar_items'] %}
+						<li><a href="{{ escape(item['url']) }}">{{ escape(item['label']) }}</a></li>
+						{% end %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+		{% end %}
+		<div class="container-fluid">
+		{% block body %}{% end %}
+		</div>
+		<hr/>
+		<div class="container-fluid">
+		{% block footer %}
+		<p style="text-align:center;"><small>Powered by Plunk, a lightweight web log system.</small></p>
+		{% end %}
+		</div>
+		{% block js %}
+		{% end %}
+	</body>
+</html>
+

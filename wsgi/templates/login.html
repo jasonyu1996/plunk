@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login
+{% end %}
+
+{% block body %}
+<form class="form-horizontal" action="/login/" method="post">
+	<div class="form-group">
+		<label for="input_username" class="col-sm-2 control-label">Username</label>
+		<div class="col-sm-5">
+			<input class="form-control" id="input_username" type="text" name="username" placeholder="Username"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="input_password" class="col-sm-2 control-label">Password</label>
+		<div class="col-sm-5">
+			<input class="form-control" id="input_password" type="password" name="password" placeholder="Password"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sum-10">
+			<button class="btn btn-default" type="submit">Login</button>
+		</div>
+	</div>
+	<input type="hidden" name="next" value="{{ next_url }}" />
+</form>
+{% end %}
+
+

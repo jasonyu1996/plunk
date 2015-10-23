@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}
+	Archive
+{% end %}
+{% block body %}
+	{% module Pager('/archive/page/%d', page_number, is_last) %}
+	{% module PostList(posts, False, current_user is not None) %}
+	{% module Pager('/archive/page/%d', page_number, is_last) %}
+{% end %}
+

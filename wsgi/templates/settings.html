@@ -1,0 +1,161 @@
+{% extends "masterlayout.html" %}
+{% block title %}
+Settings
+{% end %}
+{% block contents %}
+<form class="form-horizontal">
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputBlogName">Blog name</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputBlogName" name="blogname" placeholder="Blog name" value="{{ conf['blog_name'] }}"/>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputBlogSubName">Blog subname</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputBlogSubname" name="blogsubname" placeholder="Blog subname" value="{{ conf['blog_subname'] }}"/>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputTimezone">Timezone</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputTimezone" name="timezone" placeholder="e.g. Asia/Shanghai" value="{{ conf['timezone'] }}" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputDP">Number of detailed posts per page</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputDP" name="dp" placeholder="e.g. 5" value="{{ conf['detailed_post_no_per_page'] }}" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputBP">Number of brief posts per page</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputBP" name="bp" placeholder="e.g. 50" value="{{ conf['brief_post_no_per_page'] }}" />
+		</div>
+	</div>
+
+	<!-- navigation list -->
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="navListTable">Navigation list</label>
+		<div id="inputNavList" class="col-sm-7">
+			<table class="table table-bordered" id="navListTable">
+			</table>
+			<button type="button" class="btn btn-primary" id="showDialog" data-toggle="modal" data-target="#navItemModal">Add an item</button>
+		</div>
+	</div>
+
+	<!-- static files -->
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputMathjaxUrl">Mathjax URL</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputMathjaxUrl" name="mathjaxurl" placeholder="e.g. MathJax.js" value="{{ conf['mathjax_url'] }}" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="inputJQueryUrl">jQuery URL</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="inputJQueryUrl" name="jqueryurl" placeholder="e.g. jquery.min.js" value="{{ conf['jquery_url'] }}" />
+		</div>
+	</div>
+
+
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sum-9">
+			<button class="btn btn-default" id="save" type="button">Save</button>
+			<span id="callbackSpan" hidden="hidden"></span>
+		</div>
+	</div>
+</form>
+<!-- navigation item modal dialog -->
+<div class="modal fade" id="navItemModal" aria-labelledby="modalLabel" aria-hidden="true" role="dialog" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeDialog"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalLabel">New Item</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="inputItemLabel">Label</label>
+						<div class="col-sm-9">
+							<input type="text" id="inputItemLabel" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="inputItemUrl">URL</label>
+						<div class="col-sm-9">
+							<input type="text" id="inputItemUrl" class="form-control"/>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="addItem" data-dismiss="modal">Add</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% end %}
+{% block js %}
+<script>
+document.getElementById('settingslink').className = 'active';
+</script>
+<script src="{{ static_url('js/nav-list.js') }}"></script>
+<script>
+
+function addNavItem(){
+	var label = $("#inputItemLabel").val();
+	var url = $("#inputItemUrl").val();
+
+	navListAddItem(label, url);
+}
+
+function postCallback(data){
+	callbackSpan = $("#callbackSpan");
+	callbackSpan.html(data);
+	callbackSpan.fadeIn(1000, function (){
+		setTimeout(function (){	
+			callbackSpan.fadeOut(1000);
+		}, 5000);
+	});
+}
+
+function saveSettings(){
+	var settings = {
+		blog_name: $("#inputBlogName").val(),
+		blog_subname: $("#inputBlogSubname").val(),
+		timezone: $("#inputTimezone").val(),
+		detailed_post_no_per_page: parseInt($("#inputDP").val()),
+		brief_post_no_per_page: parseInt($("#inputBP").val()),
+		mathjax_url: $("#inputMathjaxUrl").val(),
+		jquery_url: $("#inputJQueryUrl").val(),
+		nav_bar_items: navListGetData()
+	};
+	$.post("/master/settings/", { conf: JSON.stringify(settings) }, postCallback, "html");
+}
+
+function clearDialog(){
+	$("#inputItemLabel").val("");
+	$("#inputItemUrl").val("");
+}
+
+function docReady(){
+	createNavList($("#navListTable"),
+			{% raw nav_list_json %});
+	$("#showDialog").click(clearDialog);
+	$("#addItem").click(addNavItem);
+	$("#save").click(saveSettings);
+}
+
+$(document).ready(docReady());
+</script>
+{% end %}
+

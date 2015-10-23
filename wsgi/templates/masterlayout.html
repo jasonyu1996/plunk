@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row-fluid">
+		<ul class="nav nav-pills nav-stacked col-md-2">
+			<li id="masterhomelink"><a href="/master/">Master Home</a><li>
+			<li id="statlink"><a href="/master/statistics/">Statistics</a></li>
+			<li id="settingslink"><a href="/master/settings/">Settings</a></li>
+			<li id="hiddenlistlink"><a href="/master/hidden/">Hidden Posts</a><li>
+			<li id="newpostlink"><a href="/master/edit/">New Post</a></li>
+		</ul>
+	<div class="col-md-10">
+		{% block contents %}
+		{% end %}
+	</div>
+</div>
+{% end %}

@@ -21,7 +21,7 @@ define('port', default=8000, help='run on the given port', type=int);
 #define('db_port', default=3306, help='the database port', type=int);
 
 class PlunkApplication(tornado.wsgi.WSGIApplication):
-    def __init__(self, db_host, db_port, db_name, data_dir, **param):
+    def __init__(self, db_host, db_port, db_name, db_user, db_pwd, data_dir, **param):
         handler_list = [
                 ('/', handlers.HomeHandler),
                 ('/post/(\w+)', handlers.PostViewHandler),
@@ -46,7 +46,7 @@ class PlunkApplication(tornado.wsgi.WSGIApplication):
                 };
 
         tornado.web.Application.__init__(self, handlers = handler_list, ui_modules = ui_modules, **param);
-        self.__engine = create_engine('mysql+mysqlconnector://plunk_user:__plunk__server__db__@%s:%d/%s' % (db_host, db_port, db_name), pool_size = 20, pool_recycle = 18000);
+        self.__engine = create_engine('mysql+mysqlconnector://%s:%s@%s:%d/%s' % (db_user, db_pwd, db_host, db_port, db_name), pool_size = 20, pool_recycle = 18000);
         self.db_session = scoped_session(sessionmaker(bind = self.__engine));
         self.cookie_expire_secs = 1800;
 

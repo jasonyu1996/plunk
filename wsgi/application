@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+import tornado.wsgi
+from app import app_settings;
+from app import PlunkApplication;
+
+application = PlunkApplication('localhost', 3306, 'db_name', 'db_user', 'db_pwd', '../data/', **app_settings);
+
